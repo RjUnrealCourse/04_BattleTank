@@ -1,2 +1,3 @@
-# 04_BattleTank
-An open-world head-to-head tank fight with sample AI, terrain and advanced control system in Unreal 4
+# Battle Tank Game 
+Designed as a part of Unreal course and 24 h of code project
+
