@@ -14,7 +14,7 @@ void ATankAIController::BeginPlay()
 
     if (PossessedTank && FirstPlayer)
     {
-        UE_LOG(LogTemp, Warning, TEXT("[ + ] AI found first player tank"));
+        // Do None
     }
     else
     {
@@ -55,7 +55,7 @@ void ATankAIController::Tick(float DeltaTime)
     // can be killed and become inoperable in game or vanish completely
     if (FirstPlayerTank && ControlledTank)
     {         
-        ControlledTank->AimAT(FirstPlayerTank->GetActorLocation());
+        ControlledTank->AimAt(FirstPlayerTank->GetActorLocation());
         // TPDPD move towards the first player
         // FIRE IF READY
     }
