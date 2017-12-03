@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "TankAimingComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 
 
@@ -16,26 +18,54 @@ UTankAimingComponent::UTankAimingComponent()
 
 
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
+void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 {
-	Super::BeginPlay();
+    if (!Barrel) { return; }
+    
+    // get start location AKA barrel socket
+    FVector OutLaunchVelocity;
+    FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
-	// ...
-	
+
+    // calculate out launch velocity
+    bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
+    (
+        this,
+        OutLaunchVelocity,
+        StartLocation,
+        WorldSpaceAim,
+        LaunchSpeed,
+        false,
+        0.f,
+        0,
+        ESuggestProjVelocityTraceOption::DoNotTrace
+    );
+
+    if (bHaveAimSolution)
+    {
+        auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+        MoveBarrelTowards(OutLaunchVelocity);
+        // change turret to match the yaw and barrel to match the pitch 
+    }
+
+    return;
 }
 
 
 
-void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-    auto OurTankName = GetOwner()->GetName();
-    FVector BarrelLocation{ 0.f };
+    if (!Barrel) { return; }
 
-    // get start location AKA barrel socket
-    if (Barrel) { BarrelLocation = Barrel->GetSocketLocation(FName("Projectile")); }
+    // Work-out difference between curretn barrel rotation, and AimDirection
+    FRotator AimAsRotator = AimDirection.Rotation(); 
+    FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
+    FRotator DeltaRotator = AimAsRotator - BarrelRotator;
 
-    UE_LOG(LogTemp, Warning, TEXT("Launching at %f"), LaunchSpeed);
+    // Move the barrel the right amount this frame
+    UE_LOG(LogTemp, Warning, TEXT("Delta Rotation = %s"), *DeltaRotator.ToString());
+
+    // Given a max elevation speed, and the frame time
 }
 
 
@@ -43,16 +73,5 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent *BarrelToSet)
 {
     Barrel = BarrelToSet;
-}
-
-
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
