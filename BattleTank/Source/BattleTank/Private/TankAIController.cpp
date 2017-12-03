@@ -41,3 +41,22 @@ ATank * ATankAIController::GetPlayerTank() const
     if (PlayerPawn) { return Cast<ATank>(PlayerPawn); }
     else { return nullptr; }
 }
+
+
+// Called every frame
+void ATankAIController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    
+    auto FirstPlayerTank = GetPlayerTank();
+    auto ControlledTank = GetControlledTank();
+
+    // protecting pointers on both AI and player tank, even AI tank 
+    // can be killed and become inoperable in game or vanish completely
+    if (FirstPlayerTank && ControlledTank)
+    {         
+        ControlledTank->AimAT(FirstPlayerTank->GetActorLocation());
+        // TPDPD move towards the first player
+        // FIRE IF READY
+    }
+}

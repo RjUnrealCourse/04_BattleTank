@@ -20,5 +20,9 @@ private:
 
     ATank * GetPlayerTank() const;
 
+public:
     virtual void BeginPlay();	
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
+
 };
