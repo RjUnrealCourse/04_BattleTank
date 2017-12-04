@@ -8,7 +8,7 @@
 
 /* Forward declarations */
 class UTankBarrel;
-
+class UTankTurret;
 
 
 
@@ -21,13 +21,15 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
     void AimAt(FVector WorldSpaceAim, float LaunchSpeed);   
+    
 
-    // TODO Add SetTurretReference later
-
-    void SetBarrelReference(UTankBarrel * BarrelToSet); // will be called frwom tank, needs to be public
+    // will be called from tank, needs to be public
+    void SetBarrelReference(UTankBarrel * BarrelToSet); 
+    void SetTurretReference(UTankTurret * TurretToSet);
 
 protected:
     UTankBarrel *Barrel = nullptr;
+    UTankTurret *Turret = nullptr;
 
     void MoveBarrelTowards(FVector AimDirection); // TODO move to private
 

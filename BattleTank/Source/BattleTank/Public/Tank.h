@@ -9,6 +9,7 @@
 
 /// Forward declarations 
 class UTankBarrel;
+class UTankTurret;
 class UTankAimingComponent;
 
 
@@ -37,6 +38,10 @@ public:
     // sets barrel
     UFUNCTION(BlueprintCallable, Category = Setup) // never end with a semicolon
     void SetBarrelReference(UTankBarrel * BarrelToSet);
+
+    // sets turret
+    UFUNCTION(BlueprintCallable, Category = Setup) // never end with a semicolon
+    void SetTurretReference(UTankTurret * TurretToSet);
 
     void AimAt(FVector HitLocation);
 

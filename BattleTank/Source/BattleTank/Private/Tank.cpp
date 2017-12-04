@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
+#include "TankTurret.h"
 
 
 
@@ -25,10 +26,18 @@ void ATank::BeginPlay()
 }
 
 
-/* Will be called from Blueprints with barrel static as argument */
+/* Will be called from Blueprints with barrel staticmesh as argument */
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
     TankAimingComponent->SetBarrelReference(BarrelToSet);
+}
+
+
+
+/* Will be called from Blueprints with turret staticmesh as argument */
+void ATank::SetTurretReference(UTankTurret * TurretToSet)
+{
+    TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
 
