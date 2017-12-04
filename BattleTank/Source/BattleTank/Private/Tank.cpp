@@ -49,6 +49,12 @@ void ATank::AimAt(FVector HitLocation)
 }
 
 
+void ATank::Fire()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Fire is called!"));
+}
+
+
 
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -36,12 +36,17 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
     // sets barrel
-    UFUNCTION(BlueprintCallable, Category = Setup) // never end with a semicolon
+    UFUNCTION(BlueprintCallable, Category = Setup)
     void SetBarrelReference(UTankBarrel * BarrelToSet);
 
     // sets turret
-    UFUNCTION(BlueprintCallable, Category = Setup) // never end with a semicolon
+    UFUNCTION(BlueprintCallable, Category = Setup) 
     void SetTurretReference(UTankTurret * TurretToSet);
+
+    // Fire barrel
+    UFUNCTION(BlueprintCallable, Category = Firing)
+    void Fire();
+
 
     void AimAt(FVector HitLocation);
 
