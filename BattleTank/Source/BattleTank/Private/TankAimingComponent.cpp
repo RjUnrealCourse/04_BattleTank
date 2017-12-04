@@ -46,10 +46,9 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
     if (bHaveAimSolution)
     {
         auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-        MoveBarrelTowards(OutLaunchVelocity);
+        MoveBarrelTowards(AimDirection);
 
-        auto Time = GetWorld()->GetTimeSeconds();
-        UE_LOG(LogTemp, Warning, TEXT("%f: [ + ] Aim solution found!"), Time);
+        auto Time = GetWorld()->GetTimeSeconds();        
         // change turret to match the yaw and barrel to match the pitch 
     }
     else
@@ -72,7 +71,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
     FRotator DeltaRotator = AimAsRotator - BarrelRotator;
 
-    Barrel->Elevate(5);
+    Barrel->Elevate(DeltaRotator.Pitch);
 }
 
 
