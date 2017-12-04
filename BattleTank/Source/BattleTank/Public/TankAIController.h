@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
-#include "AIController.h"
+#include "AIController.h"  // IMP
 #include "TankAIController.generated.h"
+
+
+/// Forward Declaration
+class ATank;
+
 
 /**
  * 

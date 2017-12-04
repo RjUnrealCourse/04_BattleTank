@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "TankAimingComponent.h"
+#include "GameFramework/Pawn.h"  // IMP
 #include "Tank.generated.h"
 
 
-/* Forward declarations */
+/// Forward declarations 
 class UTankBarrel;
+class UTankAimingComponent;
+
+
 
 
 UCLASS()

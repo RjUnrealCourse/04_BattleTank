@@ -49,13 +49,13 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
         MoveBarrelTowards(OutLaunchVelocity);
 
         auto Time = GetWorld()->GetTimeSeconds();
-        UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found!"), Time);
+        UE_LOG(LogTemp, Warning, TEXT("%f: [ + ] Aim solution found!"), Time);
         // change turret to match the yaw and barrel to match the pitch 
     }
     else
     {
         auto Time = GetWorld()->GetTimeSeconds();
-        UE_LOG(LogTemp, Error, TEXT("%f: No solution found!"), Time);
+        UE_LOG(LogTemp, Error, TEXT("%f: [ - ] No solution found!"), Time);
     }
 
     return;
