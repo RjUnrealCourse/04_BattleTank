@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "TankTurret.h"
 #include "Projectile.h"
 
@@ -14,7 +15,10 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
     // init
+    // aiming
     TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));    
+    // movement
+    TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 
@@ -25,6 +29,7 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
 
 
 /* Will be called from Blueprints with barrel staticmesh as argument */
@@ -49,6 +54,7 @@ void ATank::AimAt(FVector HitLocation)
     if (TankAimingComponent) { TankAimingComponent->AimAt(HitLocation, LaunchSpeed); }    
     return;
 }
+
 
 
 void ATank::Fire()
