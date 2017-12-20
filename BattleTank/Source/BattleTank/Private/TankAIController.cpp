@@ -23,12 +23,12 @@ void ATankAIController::Tick(float DeltaTime)
     auto FirstPlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
     auto ControlledTank = Cast<ATank>(GetPawn());
 
-    // protecting pointers on both AI and player tank, even AI tank 
-    // can be killed and become inoperable in game or vanish completely
-    if (FirstPlayerTank && ControlledTank)
+    // protect pointers on both AI and player tank 
+    if (FirstPlayerTank && ControlledTank) // even AI tank can be killed and become inoperable in game or vanish completely
     {         
         ControlledTank->AimAt(FirstPlayerTank->GetActorLocation());
         // aim / move towards the first player
+        MoveToActor(FirstPlayerTank, AcceptanceRadius);
         // FIRE IF READY
         ControlledTank->Fire();
     }

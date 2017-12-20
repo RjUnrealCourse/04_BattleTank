@@ -59,7 +59,6 @@ void ATank::Fire()
 {
     bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 
-
     // if reloaded fire!
     if (Barrel && ProjectileBlueprint && bIsReloaded)
     {
@@ -73,10 +72,8 @@ void ATank::Fire()
         Projectile->LaunchProjectile(LaunchSpeed);
         LastFireTime = FPlatformTime::Seconds();
     }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Fire(): Barrel && ProjectileBlueprint && bIsReloaded == false"));
-    }
+    else 
+    { /*UE_LOG(LogTemp, Warning, TEXT("[ %f ] [ %s ] Reloading barrel . . ."), GetWorld()->GetTimeSeconds(), *GetName());*/ }
 }
 
 

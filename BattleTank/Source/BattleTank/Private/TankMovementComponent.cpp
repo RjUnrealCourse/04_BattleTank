@@ -37,3 +37,20 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
     // TODO prevent double-speed due to dual control use
     return;
 }
+
+
+
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
+{
+    // No need to call Super as we're replacing the functionality
+    
+    auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal(); // Direction of tank
+    auto AIForwardIntention = MoveVelocity.GetSafeNormal(); // direction AI wants us to move
+        
+    auto ForwardThrow = FVector::DotProduct(AIForwardIntention, TankForward); // dunno?
+    // send move forward signal
+    //IntendMoveForward(ResultantMag);
+
+    auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention);
+    IntendTurnRight(RightThrow.Z);        
+}
