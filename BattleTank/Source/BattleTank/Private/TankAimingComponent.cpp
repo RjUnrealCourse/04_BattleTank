@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Ramachandra Junior.  Copyright 2016. All rights reserved.
 
 
 #include "TankAimingComponent.h"
@@ -20,10 +20,18 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
+void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
+{
+    Barrel = BarrelToSet;
+    Turret = TurretToSet;
+    return;
+}
+
+
 
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 {
-    if (!Barrel) { return; }
+    if (! ensure(Barrel) ) { return; }
     
     // get start location AKA barrel socket
     FVector OutLaunchVelocity;
@@ -66,7 +74,7 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-    if (! Barrel || ! Turret) { return; }
+    if ( !ensure(Barrel && Turret) ) { return; }
 
     // Work-out difference between curretn barrel rotation, and AimDirection
     FRotator AimAsRotator = AimDirection.Rotation(); 
@@ -76,21 +84,3 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
     Barrel->Elevate(DeltaRotator.Pitch);
     Turret->Rotate(DeltaRotator.Yaw);
 }
-
-
-// set turret 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel *BarrelToSet)
-{
-    if (!BarrelToSet) { return; }
-    Barrel = BarrelToSet;
-}
-
-
-
-// set barrel
-void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
-{
-    if (!TurretToSet) { return; }
-    Turret = TurretToSet;
-}
-

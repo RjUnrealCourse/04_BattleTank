@@ -1,6 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Ramachandra Junior.  Copyright 2016. All rights reserved.
 
 #include "TankPlayerController.h"
+#include "TankAimingComponent.h"
 #include "Tank.h"
 #include "Runtime/Engine/Public/CollisionQueryParams.h"
 #include "Engine/World.h"
@@ -11,14 +12,15 @@ void ATankPlayerController::BeginPlay()
 {
     Super::BeginPlay();
 
-    auto ControlledTank = GetControlledTank();
-    if (!ControlledTank)
+    auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+
+    if (AimingComponent)
     {
-        UE_LOG(LogTemp, Error, TEXT("PlayController not possessing tank"));        
+        FoundAimingComponent(AimingComponent);
     }
     else
     {
-        // Do None
+        UE_LOG(LogTemp, Warning, TEXT("Player controller can't find aiming component at BeginPlay()"));
     }
 }
 
@@ -35,7 +37,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-    if (!GetControlledTank()) { return; }    
+    if ( !ensure(GetControlledTank()) ) { return; }    
 
     FVector HitLocation; // Out parameter    
     if (GetSightRayHitLocation(HitLocation)) // Has "side-effect", is going to line trace
@@ -79,7 +81,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
         EndLocation,
         ECollisionChannel::ECC_Visibility)
       )
-    {
+    { 
         OutHitLocation = HitResult.Location;
         return true;
     }

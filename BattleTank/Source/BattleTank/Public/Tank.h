@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Ramachandra Junior.  Copyright 2016. All rights reserved.
 
 #pragma once
 
@@ -29,7 +29,7 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = Setup)
     TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
 
-    UTankBarrel *Barrel = nullptr;
+    UTankBarrel *Barrel = nullptr; // TODO remove
     float ReloadTimeInSeconds = 3.f;
     double LastFireTime = 0.f;
 
@@ -51,20 +51,10 @@ public:
     // Sets default values for this pawn's properties
     ATank();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-    // sets barrel
-    UFUNCTION(BlueprintCallable, Category = Setup)
-    void SetBarrelReference(UTankBarrel * BarrelToSet);
-
-    // sets turret
-    UFUNCTION(BlueprintCallable, Category = Setup) 
-    void SetTurretReference(UTankTurret * TurretToSet);
-
     // Fire barrel
     UFUNCTION(BlueprintCallable, Category = Firing)
     void Fire();
+
 
     void AimAt(FVector HitLocation);
 };

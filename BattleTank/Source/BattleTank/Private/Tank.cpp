@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Ramachandra Junior.  Copyright 2016. All rights reserved.
 
 #include "Tank.h"
 #include "TankBarrel.h"
@@ -13,10 +13,12 @@
 ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-    // init
-    // aiming
-    TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));        
+	PrimaryActorTick.bCanEverTick = false;    
+
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, TEXT("67714f27: ATank - ATank constructor called!"));
+    }
 }
 
 
@@ -26,41 +28,31 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, TEXT("67714f27: ATank - Begin play called!"));
+    }
 }
 
-
-
-/* Will be called from Blueprints with barrel staticmesh as argument */
-void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
-{
-    TankAimingComponent->SetBarrelReference(BarrelToSet);
-    Barrel = BarrelToSet;
-}
-
-
-
-/* Will be called from Blueprints with turret staticmesh as argument */
-void ATank::SetTurretReference(UTankTurret * TurretToSet)
-{
-    TankAimingComponent->SetTurretReference(TurretToSet);
-}
 
 
 
 void ATank::AimAt(FVector HitLocation)
 {
-    if (TankAimingComponent) { TankAimingComponent->AimAt(HitLocation, LaunchSpeed); }    
-    return;
+    if (! ensure(TankAimingComponent) ) { return; }
+    TankAimingComponent->AimAt(HitLocation, LaunchSpeed);    
 }
 
 
 
 void ATank::Fire()
 {
+    if ( !ensure(Barrel && ProjectileBlueprint) ) { return; }
+
     bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 
     // if reloaded fire!
-    if (Barrel && ProjectileBlueprint && bIsReloaded)
+    if (bIsReloaded)
     {
         // Spawn a projectile at the socket location on the barrel
         auto Projectile = GetWorld()->SpawnActor<AProjectile>(
@@ -75,13 +67,3 @@ void ATank::Fire()
     else 
     { /*UE_LOG(LogTemp, Warning, TEXT("[ %f ] [ %s ] Reloading barrel . . ."), GetWorld()->GetTimeSeconds(), *GetName());*/ }
 }
-
-
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-

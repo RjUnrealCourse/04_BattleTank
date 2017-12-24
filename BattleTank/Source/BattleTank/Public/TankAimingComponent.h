@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Ramachandra Junior.  Copyright 2016. All rights reserved.
 
 #pragma once
 
@@ -31,21 +31,25 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UTankAimingComponent();
     void AimAt(FVector WorldSpaceAim, float LaunchSpeed);   
     
+    UFUNCTION(BlueprintCallable)
+    void Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
 
-    // will be called from tank, needs to be public
-    void SetBarrelReference(UTankBarrel * BarrelToSet); 
-    void SetTurretReference(UTankTurret * TurretToSet);
 
 protected:
+    UPROPERTY(BlueprintReadOnly)
+        EFiringStatus FiringStatus = EFiringStatus::Aiming;
+
+
+
+private:
+    // Sets default values for this component's properties
+    UTankAimingComponent();
+
     UTankBarrel *Barrel = nullptr;
     UTankTurret *Turret = nullptr;
 
     void MoveBarrelTowards(FVector AimDirection); // TODO move to private
 
-    UPROPERTY(BlueprintReadOnly)
-    EFiringStatus FiringStatus = EFiringStatus::Reloading;
 };
