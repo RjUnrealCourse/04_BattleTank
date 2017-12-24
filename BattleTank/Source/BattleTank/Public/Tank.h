@@ -10,7 +10,6 @@
 /// Forward declarations 
 class UTankBarrel;
 class UTankTurret;
-class UTankAimingComponent;
 class AProjectile;
 
 
@@ -39,10 +38,6 @@ protected:
     UPROPERTY(BlueprintReadWrite, Category = Setup)
     UTankBarrel *Barrel = nullptr; // TODO remove
 
-    // aiming component
-    UPROPERTY(BlueprintReadOnly)
-    UTankAimingComponent *TankAimingComponent = nullptr;
-
 public:	
     // Sets default values for this pawn's properties
     ATank();
@@ -50,7 +45,4 @@ public:
     // Fire barrel
     UFUNCTION(BlueprintCallable, Category = Firing)
     void Fire();
-
-
-    void AimAt(FVector HitLocation);
 };
