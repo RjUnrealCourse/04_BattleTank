@@ -2,7 +2,6 @@
 
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
-#include "Tank.h"
 
 
 
@@ -21,16 +20,16 @@ void ATankAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     
-    auto FirstPlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-    auto ControlledTank = Cast<ATank>(GetPawn());
+    auto FirstPlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+    auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 
     // protect pointers on both AI and player tank 
-    if (FirstPlayerTank && ControlledTank) // even AI tank can be killed and become inoperable in game or vanish completely
-    {   
-        ControlledTank->FindComponentByClass<UTankAimingComponent>()->AimAt(FirstPlayerTank->GetActorLocation());
-        // aim / move towards the first player
-        MoveToActor(FirstPlayerTank, AcceptanceRadius);
-        // FIRE IF READY
-        ControlledTank->Fire();
-    }
+    if (!ensure(FirstPlayerTank) && !ensure(AimingComponent)) { return; } // even AI tank can be killed and become inoperable in game or vanish completely
+    
+    // aim / move towards the first player
+    AimingComponent->AimAt(FirstPlayerTank->GetActorLocation());    
+    MoveToActor(FirstPlayerTank, AcceptanceRadius);
+
+    // TODO fix firing
+    AimingComponent->Fire();
 }

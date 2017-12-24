@@ -8,7 +8,6 @@
 
 
 /// Forward Declaration
-class ATank;
 
 /**
  * 
