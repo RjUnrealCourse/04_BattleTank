@@ -3,7 +3,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 #include "TankTurret.h"
 #include "Projectile.h"
 
@@ -12,13 +11,8 @@
 // Sets default values
 ATank::ATank()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;    
-
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, TEXT("67714f27: ATank - ATank constructor called!"));
-    }
+    // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    PrimaryActorTick.bCanEverTick = false;
 }
 
 
@@ -26,12 +20,8 @@ ATank::ATank()
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
-	Super::BeginPlay();
-	
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, TEXT("67714f27: ATank - Begin play called!"));
-    }
+	Super::BeginPlay();	
+    TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 
@@ -47,7 +37,8 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::Fire()
 {
-    if ( !ensure(Barrel && ProjectileBlueprint) ) { return; }
+    if ( !ensure(Barrel) || !ensure(ProjectileBlueprint) ) { return; }    
+
 
     bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 
@@ -64,6 +55,4 @@ void ATank::Fire()
         Projectile->LaunchProjectile(LaunchSpeed);
         LastFireTime = FPlatformTime::Seconds();
     }
-    else 
-    { /*UE_LOG(LogTemp, Warning, TEXT("[ %f ] [ %s ] Reloading barrel . . ."), GetWorld()->GetTimeSeconds(), *GetName());*/ }
 }

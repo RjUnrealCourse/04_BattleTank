@@ -25,7 +25,7 @@ void ATankAIController::Tick(float DeltaTime)
 
     // protect pointers on both AI and player tank 
     if (FirstPlayerTank && ControlledTank) // even AI tank can be killed and become inoperable in game or vanish completely
-    {         
+    {   
         ControlledTank->AimAt(FirstPlayerTank->GetActorLocation());
         // aim / move towards the first player
         MoveToActor(FirstPlayerTank, AcceptanceRadius);

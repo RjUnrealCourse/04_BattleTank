@@ -16,7 +16,7 @@ void UTankMovementComponent::Initialise(UTankTrack * LeftTrackToSet, UTankTrack 
 
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
-{
+{    
     if ( !ensure(LeftTrack && RightTrack) ) { return; }
 
     // Set the same throttle on both of them     
@@ -44,7 +44,7 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
-{
+{    
     // No need to call Super as we're replacing the functionality
     
     auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal(); // Direction of tank
@@ -53,7 +53,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
     auto ForwardThrow = FVector::DotProduct(AIForwardIntention, TankForward); // dunno?
     // send move forward signal
     IntendMoveForward(ForwardThrow);
-
+    
     auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention);
     IntendTurnRight(RightThrow.Z);        
 }

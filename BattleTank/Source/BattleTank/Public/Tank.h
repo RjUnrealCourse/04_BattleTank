@@ -11,7 +11,6 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
-class UTankMovementComponent;
 class AProjectile;
 
 
@@ -29,7 +28,6 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = Setup)
     TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
 
-    UTankBarrel *Barrel = nullptr; // TODO remove
     float ReloadTimeInSeconds = 3.f;
     double LastFireTime = 0.f;
 
@@ -38,14 +36,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+    UPROPERTY(BlueprintReadWrite, Category = Setup)
+    UTankBarrel *Barrel = nullptr; // TODO remove
+
     // aiming component
     UPROPERTY(BlueprintReadOnly)
     UTankAimingComponent *TankAimingComponent = nullptr;
-
-    // movement component
-    UPROPERTY(BlueprintReadOnly)
-    UTankMovementComponent *TankMovementComponent = nullptr;
-
 
 public:	
     // Sets default values for this pawn's properties
