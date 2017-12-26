@@ -34,17 +34,19 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 public:	    
     UFUNCTION(BlueprintCallable)
     void Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
-
+    
     // Fire barrel
     UFUNCTION(BlueprintCallable, Category = Firing)
     void Fire();
+
+    virtual void BeginPlay();
 
     void AimAt(FVector WorldSpaceAim);
 
 
 protected:
     UPROPERTY(BlueprintReadOnly)
-    EFiringStatus FiringStatus = EFiringStatus::Aiming;
+    EFiringStatus FiringStatus = EFiringStatus::Reloading;
 
 
 private:
@@ -67,5 +69,8 @@ private:
     UTankAimingComponent();
 
     void MoveBarrelTowards(FVector AimDirection); // TODO move to private
+
+    // add tick component here
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 };

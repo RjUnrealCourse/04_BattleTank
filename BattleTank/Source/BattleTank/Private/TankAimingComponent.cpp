@@ -13,12 +13,11 @@
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
+    // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+    // off to improve performance if you don't need them.
+    PrimaryComponentTick.bCanEverTick = true;
 }
+
 
 
 void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
@@ -27,6 +26,25 @@ void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * T
     Turret = TurretToSet;
     return;
 }
+
+
+
+void UTankAimingComponent::BeginPlay()
+{
+    LastFireTime = FPlatformTime::Seconds();
+}
+
+
+
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+    if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+    {
+        FiringStatus = EFiringStatus::Aiming;
+    }
+    // TODO Handle aiming and locked.
+}
+
 
 
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim)
@@ -87,15 +105,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 
 void UTankAimingComponent::Fire()
-{
-    if (!ensure(Barrel) || !ensure(ProjectileBlueprint)) { return; }
-
-
-    bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-
+{    
     // if reloaded fire!
-    if (bIsReloaded)
+    if (FiringStatus != EFiringStatus::Reloading)
     {
+        if (!ensure(Barrel) || !ensure(ProjectileBlueprint)) { return; }
         // Spawn a projectile at the socket location on the barrel
         auto Projectile = GetWorld()->SpawnActor<AProjectile>(
             ProjectileBlueprint,
@@ -107,3 +121,4 @@ void UTankAimingComponent::Fire()
         LastFireTime = FPlatformTime::Seconds();
     }
 }
+
