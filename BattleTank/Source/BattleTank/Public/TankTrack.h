@@ -19,6 +19,10 @@ private:
     UPROPERTY(EditDefaultsOnly)
     float TrackMaxDrivaingforce = 186000; // 40 tonne tank and 1g acceleration
 
+    virtual void BeginPlay() override;
+    
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) override;
+
 public:
     // set throttle speed / force
     UFUNCTION(BlueprintCallable, Category = Input)    
