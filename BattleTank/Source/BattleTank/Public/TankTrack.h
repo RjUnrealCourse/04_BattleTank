@@ -20,7 +20,10 @@ private:
     float TrackMaxDrivaingforce = 186000; // 40 tonne tank and 1g acceleration
 
     virtual void BeginPlay() override;
-    
+
+    UFUNCTION()
+    void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpuls, const FHitResult& Hit);
+
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) override;
 
 public:

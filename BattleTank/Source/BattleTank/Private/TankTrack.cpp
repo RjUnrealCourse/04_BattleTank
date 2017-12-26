@@ -6,11 +6,14 @@
 
 void UTankTrack::BeginPlay()
 {
-
+    OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
 
-
+void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpuls, const FHitResult & Hit)
+{
+    UE_LOG(LogTemp, Warning, TEXT("hit!!"));
+}
 
 
 
