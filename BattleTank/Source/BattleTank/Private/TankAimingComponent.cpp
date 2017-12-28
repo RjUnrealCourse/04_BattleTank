@@ -53,6 +53,13 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 
 
+EFiringStatus UTankAimingComponent::GetFiringStatus() const
+{
+    return FiringStatus;
+}
+
+
+
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim)
 {
     if (! ensure(Barrel) ) { return; }

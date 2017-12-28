@@ -43,6 +43,8 @@ public:
 
     void AimAt(FVector WorldSpaceAim);
 
+    EFiringStatus GetFiringStatus() const;
+
 
 protected:
     UPROPERTY(BlueprintReadOnly)

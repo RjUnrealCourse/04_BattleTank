@@ -31,5 +31,11 @@ void ATankAIController::Tick(float DeltaTime)
     MoveToActor(FirstPlayerTank, AcceptanceRadius);
 
     // TODO fix firing
-    AimingComponent->Fire();
+    if (
+        AimingComponent->GetFiringStatus() == EFiringStatus::Aiming ||
+        AimingComponent->GetFiringStatus() == EFiringStatus::Locked
+    ) 
+    {
+        AimingComponent->Fire();
+    }    
 }
