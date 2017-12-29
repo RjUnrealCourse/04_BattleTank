@@ -10,11 +10,12 @@
 
 // Enum for aiming state
 UENUM()
-enum class EFiringStatus : uint8 
+enum class EFiringState : uint8 
 {
     Reloading,
     Aiming,
-    Locked
+    Locked,
+    OutOfAmmo
 };
 
 
@@ -42,16 +43,31 @@ public:
     virtual void BeginPlay();
 
     void AimAt(FVector WorldSpaceAim);
-
-    EFiringStatus GetFiringStatus() const;
+    EFiringState GetFiringState() const;
 
 
 protected:
     UPROPERTY(BlueprintReadOnly)
-    EFiringStatus FiringStatus = EFiringStatus::Reloading;
+    EFiringState FiringState = EFiringState::Reloading;
+    
+    // Get number of rounds left to show on screen
+    UFUNCTION(BlueprintCallable, Category = Firing)
+    int32 GetRoundsLeft() const;
+
 
 
 private:
+    // Sets default values for this component's properties
+    UTankAimingComponent();
+
+    void MoveBarrelTowards(FVector AimDirection); // TODO move to private
+
+    // add tick component here
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+    
+    bool IsBarrelMoving();
+
+
     // copied from **Tank**
     UPROPERTY(EditDefaultsOnly, Category = Firing)
     float LaunchSpeed = 4000;
@@ -62,19 +78,10 @@ private:
     float ReloadTimeInSeconds = 3.f;
     double LastFireTime = 0.f;
     FVector AimDirection = FVector(0.f); // we get this from AimAt() and we save as a member
-
-    bool IsBarrelMoving();
-
+    
     UTankBarrel *Barrel = nullptr;
     UTankTurret *Turret = nullptr;
 
-
-    // Sets default values for this component's properties
-    UTankAimingComponent();
-
-    void MoveBarrelTowards(FVector AimDirection); // TODO move to private
-
-    // add tick component here
-    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
-
+    // Number of rounds left in the tank
+    int32 RoundsLeft = 3;
 };

@@ -9,6 +9,13 @@
 
 
 
+int32 UTankAimingComponent::GetRoundsLeft() const
+{
+    return RoundsLeft;
+}
+
+
+
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -37,25 +44,29 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
-    if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
+    if (RoundsLeft == 0) 
     {
-        FiringStatus = EFiringStatus::Reloading;
+        FiringState = EFiringState::OutOfAmmo; 
+    }
+    else if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
+    {
+        FiringState = EFiringState::Reloading;
     }    
     else if (IsBarrelMoving())
     {
-        FiringStatus = EFiringStatus::Aiming;
+        FiringState = EFiringState::Aiming;
     }
     else
     {
-        FiringStatus = EFiringStatus::Locked;
+        FiringState = EFiringState::Locked;
     }
 }
 
 
 
-EFiringStatus UTankAimingComponent::GetFiringStatus() const
+EFiringState UTankAimingComponent::GetFiringState() const
 {
-    return FiringStatus;
+    return FiringState;
 }
 
 
@@ -119,6 +130,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 }
 
 
+
 bool UTankAimingComponent::IsBarrelMoving()
 {
     if (!ensure(Barrel)) { return false; }
@@ -129,23 +141,28 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 
 
-
-
 void UTankAimingComponent::Fire()
-{    
+{       
     // if reloaded fire!
-    if (FiringStatus != EFiringStatus::Reloading)
-    {
+    if (
+        FiringState == EFiringState::Aiming ||
+        FiringState == EFiringState::Locked
+        ) {
+
+        //UE_LOG(LogTemp, Warning, TEXT("EFiringState loading: %s"), *FiringState.ToString());
+
         if (!ensure(Barrel) || !ensure(ProjectileBlueprint)) { return; }
         // Spawn a projectile at the socket location on the barrel
         auto Projectile = GetWorld()->SpawnActor<AProjectile>(
             ProjectileBlueprint,
             Barrel->GetSocketLocation(FName("Projectile")),
             Barrel->GetSocketRotation(FName("Projectile"))
-        );
+            );
 
         Projectile->LaunchProjectile(LaunchSpeed);
         LastFireTime = FPlatformTime::Seconds();
+
+        --RoundsLeft;
     }
 }
 
