@@ -10,6 +10,7 @@
 
 // Forward declarations
 class UProjectileMovementComponent;
+class UParticleSystemComponent;
 
 
 
@@ -18,10 +19,6 @@ UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AProjectile();
 
 protected:
 	// Called when the game starts or when spawned
@@ -33,6 +30,15 @@ public:
     void LaunchProjectile(float Speed);
 
 private:
+    // Sets default values for this actor's properties
+    AProjectile();
+
+
     UProjectileMovementComponent *ProjectileMovement = nullptr;
+
+    UPROPERTY(VisibleAnywhere, Category="Setup")
+    UStaticMeshComponent *CollisionMesh = nullptr;
 	
+    UPROPERTY(VisibleAnywhere, Category = "Setup")
+    UParticleSystemComponent* LaunchBlast = nullptr;
 };

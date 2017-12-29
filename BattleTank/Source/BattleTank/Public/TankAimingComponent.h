@@ -66,22 +66,24 @@ private:
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
     
     bool IsBarrelMoving();
-
-
+    
     // copied from **Tank**
     UPROPERTY(EditDefaultsOnly, Category = Firing)
     float LaunchSpeed = 4000;
 
+    UPROPERTY(EditDefaultsOnly, Category = Firing)
+    float ReloadTimeInSeconds = 3.f;
+
+    UPROPERTY(EditDefaultsOnly, Category = Firing)
+    // Number of rounds left in the tank
+    int32 RoundsLeft = 3;
+
     UPROPERTY(EditDefaultsOnly, Category = Setup)
     TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
     
-    float ReloadTimeInSeconds = 3.f;
     double LastFireTime = 0.f;
     FVector AimDirection = FVector(0.f); // we get this from AimAt() and we save as a member
     
     UTankBarrel *Barrel = nullptr;
     UTankTurret *Turret = nullptr;
-
-    // Number of rounds left in the tank
-    int32 RoundsLeft = 3;
 };
