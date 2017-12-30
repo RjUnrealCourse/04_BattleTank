@@ -9,7 +9,7 @@
 /**
  * Use to set maximum driving force, and to move tank
  */
-UCLASS(ClassGroup = (Setup), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (Components), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
@@ -31,7 +31,7 @@ private:
 
 public:
     // set throttle speed / force
-    UFUNCTION(BlueprintCallable, Category = Input)    
+    UFUNCTION(BlueprintCallable, Category="Input")    
     void SetThrottle(float Throttle);
     void DriveTrack();
 
