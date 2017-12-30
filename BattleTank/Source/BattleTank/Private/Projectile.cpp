@@ -13,12 +13,11 @@ AProjectile::AProjectile()
     CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
     SetRootComponent((USceneComponent*)CollisionMesh);
     CollisionMesh->SetNotifyRigidBodyCollision(true);
-    CollisionMesh->SetVisibility(true); // TODO change to false
+    CollisionMesh->SetVisibility(true); // TODO set to false
 
 
     LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
     LaunchBlast->AttachTo(RootComponent);
-
 
     ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
     ProjectileMovement->bAutoActivate = false;
