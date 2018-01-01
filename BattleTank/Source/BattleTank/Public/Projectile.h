@@ -32,6 +32,8 @@ private:
     // Sets default values for this actor's properties
     AProjectile();
 
+    void OnTimerExpire();
+
     UFUNCTION()
     void OnHit(
         UPrimitiveComponent* HitComponent,
@@ -40,6 +42,9 @@ private:
         FVector NormalImpuls,
         const FHitResult& Hit
     );
+
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    float DestroyDelay = 10.f;
 
     UPROPERTY(VisibleAnywhere, Category="Components")
     UStaticMeshComponent *CollisionMesh = nullptr;

@@ -48,11 +48,31 @@ void AProjectile::BeginPlay()
 
 
 
+
+void AProjectile::OnTimerExpire()
+{
+    // destroy current projectile actor
+    this->Destroy();
+    return;
+}
+
+
+
+
 void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpuls, const FHitResult & Hit)
 {    
     LaunchBlast->Deactivate();
     ImpactBlast->Activate();
     ExplosionForce->FireImpulse();
+
+    // Destroy collision mesh
+    //SetRootComponent(ImpactBlast); // set primary component before destroy
+    CollisionMesh->DestroyComponent();
+
+    // we set timer on the current object and we use the delegate method
+    auto ProjectileTimerHandle = FTimerHandle();
+    // Destroy actor after 1 second
+    GetWorld()->GetTimerManager().SetTimer(ProjectileTimerHandle, this, &AProjectile::OnTimerExpire, DestroyDelay);
 }
 
 
