@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "Runtime/Engine/Classes/PhysicsEngine/RadialForceComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h" // for GameplayStatics::x
 #include "GameFramework/ProjectileMovementComponent.h"
 
 
@@ -40,8 +41,7 @@ AProjectile::AProjectile()
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
-	Super::BeginPlay();	
-
+	Super::BeginPlay();	       
     // if projectile hits something then call OnHit.
     CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit); 
 }
@@ -66,13 +66,22 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
     ExplosionForce->FireImpulse();
 
     // Destroy collision mesh
-    //SetRootComponent(ImpactBlast); // set primary component before destroy
-    CollisionMesh->DestroyComponent();
+    SetRootComponent(ImpactBlast); // set primary component before destroy
+    CollisionMesh->DestroyComponent();    
 
+    // apply damage to tank
+    UGameplayStatics::ApplyRadialDamage(
+        this,
+        ProjectileDamage, // amount of damage projectile has to do, create this float member first
+        GetActorLocation(),
+        ExplosionForce->Radius, // for consistancy
+        UDamageType::StaticClass(),
+        TArray<AActor *>() // damage all actors
+    );
+        
     // we set timer on the current object and we use the delegate method
-    auto ProjectileTimerHandle = FTimerHandle();
-    // Destroy actor after 1 second
-    GetWorld()->GetTimerManager().SetTimer(ProjectileTimerHandle, this, &AProjectile::OnTimerExpire, DestroyDelay);
+    FTimerHandle Timer;
+    GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);     
 }
 
 

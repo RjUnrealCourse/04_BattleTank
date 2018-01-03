@@ -58,5 +58,9 @@ private:
     UPROPERTY(VisibleAnywhere, Category = "Components")
     URadialForceComponent* ExplosionForce = nullptr;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    float ProjectileDamage = 20.f; // how much damage to apply on hit tank
+
+
     UProjectileMovementComponent *ProjectileMovement = nullptr;
 };
